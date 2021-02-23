@@ -33,23 +33,24 @@ async function post(req, res) {
 async function put(req, res) {
   const { id } = req.params
 
-  const {
-    name,
-    brand,
-    price,
-  } = req.body
-
-  const product = await ProductsModel.findOneAndUpdate(id, {
-    name,
-    brand,
-    price,
-  }, { new: true, upsert: true })
+  const product = await ProductsModel.findOneAndUpdate({ _id: id }, req.body, { new: true })
 
   res.send({
-    message: 'success'
+    message: 'success',
+    product,
   })
-}
 
+  /* 
+  const product = await ProductsModel.findOne({ _id: id })
+
+  await product.updateOne(req.body)
+
+  res.send({
+    message: 'success',
+    product,
+  })
+  */
+}
 
 module.exports = {
   get,
